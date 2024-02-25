@@ -16,6 +16,7 @@ import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -37,15 +38,16 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public Collection<Ads> getAllAds() {
-
-        return null;
+    public Ads getAllAds() {
+        List<AdEntity> ads = adRepository.findAll();
+        return adMapper.toAds(ads.size(),ads);
 
     }
 
     @Override
-    public Collection<AdEntity> getAdsMe(Authentication authentication) {
-        return null;
+    public Ads getAdsMe(Authentication authentication) {
+        List<AdEntity> ads = adRepository.findAllByAuthorId(userService.getUser(authentication).getId());
+        return adMapper.toAds(ads.size(),ads);
     }
 
 
@@ -61,7 +63,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public AdEntity removeAdsById(Long id) {
+    public AdEntity removeAdsById(Long id,Authentication authentication) {
         return null;
     }
 

@@ -9,6 +9,8 @@ import ru.skypro.homework.dto.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.entity.AdEntity;
 
+import java.util.List;
+
 /**
  * маппер для {@link AdEntity} в
  * {@link Ad},
@@ -62,4 +64,10 @@ public interface AdMapper {
     @Mapping(target = "phone", source = "author.phone")
     @Mapping(target = "title", source = "name")
     ExtendedAd toExtendedAd(AdEntity adEntity);
+
+
+
+    @Mapping(target = "count", source = "size")
+    @Mapping(target = "results", source = "list")
+    Ads toAds(Integer size, List<AdEntity> list);
 }

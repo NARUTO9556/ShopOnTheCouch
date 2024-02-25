@@ -12,11 +12,11 @@ import java.io.IOException;
 import java.util.Collection;
 
 public interface AdsService {
-    Collection<Ads> getAllAds();
-    Collection<AdEntity> getAdsMe(Authentication authentication);
+  Ads getAllAds();
+   Ads getAdsMe(Authentication authentication);
 
     CreateOrUpdateAd addAds(CreateOrUpdateAd createOrUpdateAd, MultipartFile imageFiles, Authentication authentication) throws IOException;
-    AdEntity removeAdsById(Long id);
+    AdEntity removeAdsById(Long id,Authentication authentication);
 
 
     AdEntity updateAds(Long adId, CreateOrUpdateAd createOrUpdateAd, Authentication authentication);
