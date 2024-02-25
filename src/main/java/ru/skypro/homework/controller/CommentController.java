@@ -10,10 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
+import ru.skypro.homework.entity.AdEntity;
+import ru.skypro.homework.entity.CommentEntity;
+import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.service.CommentService;
+
+import java.io.IOException;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -21,6 +28,14 @@ import ru.skypro.homework.dto.CreateOrUpdateComment;
 @Tag(name = "Комментарии")
 @RestController
 public class CommentController {
+    private final CommentService commentService;
+    private final CommentMapper commentMapper;
+
+    public CommentController(CommentService commentService, CommentMapper commentMapper) {
+        this.commentService = commentService;
+        this.commentMapper = commentMapper;
+    }
+
     @Operation(
             tags = "Комментарии",
             summary = "Получение комментариев объявления",
@@ -33,8 +48,9 @@ public class CommentController {
             }
     )
     @GetMapping("/{id}/comments")
-    public ResponseEntity<?> getComments(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).build();//пустышка
+    public ResponseEntity<Comment> getComments(@PathVariable Long id) {
+        Comment comments = commentService.getAllComment(id);
+        return ResponseEntity.status(HttpStatus.OK).body(comments);
     }
 
     @Operation(
@@ -55,8 +71,10 @@ public class CommentController {
             }
     )
     @PostMapping("/{id}/comments")
-    public ResponseEntity<?> addComment(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).build();//пустышка
+    public ResponseEntity<CreateOrUpdateComment> addComment
+            (@RequestPart AdEntity id, @RequestPart CreateOrUpdateComment comment, @RequestPart Authentication authentication) throws IOException {
+        CreateOrUpdateComment addComment = commentService.addComment(id, comment, authentication);
+        return ResponseEntity.status(HttpStatus.OK).body(addComment);
     }
     @Operation(
             tags = "Комментарии",
@@ -93,7 +111,7 @@ public class CommentController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> updateComments(@PathVariable int adId, @PathVariable int commentId) {
+    public ResponseEntity<?> updateComment(@PathVariable int adId, @PathVariable int commentId) {
         return ResponseEntity.status(HttpStatus.OK).build();//пустышка
     }
 }

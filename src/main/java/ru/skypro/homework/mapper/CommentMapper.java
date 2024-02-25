@@ -41,9 +41,9 @@ public interface CommentMapper {
     @Mapping(target = "pk", source = "pk.id")
     @Mapping(target = "authorImage", source = "author.image.id")
     @Mapping(target = "authorFirstName", source = "author.firstName")
-    Comment toCommentDto(CommentEntity entity);
+    Comment toCommentDto(CommentEntity commentEntity);
 
 //    Comments toCommentsDto(CommentEntity entity);
 
-    CreateOrUpdateComment toCreateOrUpdateCommentDto(CommentEntity entity);
+    CreateOrUpdateComment toCreateOrUpdateCommentDto(CommentEntity commentEntity);
 }

@@ -41,7 +41,7 @@ public class FormLogInfo {
         String METHOD_NAME = STACK_TRACE_ELEMENT.getMethodName();
         String CLASS_NAME = STACK_TRACE_ELEMENT.getClassName();
         return new StringBuilder()
-                .append(" ВНИМАНЕИЕ: ")
+                .append(" ВНИМАНИЕ: ")
                 .append(" исключение в методе ")
                 .append("\"")
                 .append(METHOD_NAME)
