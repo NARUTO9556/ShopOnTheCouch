@@ -49,8 +49,8 @@ public class AdsController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<?>> getAllAds(){
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Ads> getAllAds(){
+        return ResponseEntity.ok(adsService.getAllAds());
     }
     @Operation(
             tags = "Объявления",
@@ -148,8 +148,8 @@ public class AdsController {
             }
     )
     @GetMapping(value = "/me")
-    public ResponseEntity<?>getAdsMe(){
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Ads>getAdsMe(Authentication authentication){
+        return ResponseEntity.ok(adsService.getAdsMe(authentication));
 
     }
     @Operation(
