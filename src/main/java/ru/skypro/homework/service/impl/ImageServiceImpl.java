@@ -29,7 +29,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public ImageEntity getImageById(long id) {
-        return null;
+        return new ImageEntity();
     }
 
     @Override

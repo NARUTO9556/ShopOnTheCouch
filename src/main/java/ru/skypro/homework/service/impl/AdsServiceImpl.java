@@ -14,10 +14,12 @@ import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
+@Transactional
 @Service
 @Slf4j
 public class AdsServiceImpl implements AdsService {
@@ -46,7 +48,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public Ads getAdsMe(Authentication authentication) {
-        List<AdEntity> ads = adRepository.findAllByAuthorId(userService.getUser(authentication).getId());
+        List<AdEntity> ads = adRepository.findAllByAuthorId((long) userService.getUser(authentication).getId());
         return adMapper.toAds(ads.size(),ads);
     }
 
@@ -63,12 +65,14 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public AdEntity removeAdsById(Long id,Authentication authentication) {
-        return null;
+    public void removeAdsById(Long id) {
+        adRepository.deleteById(id);
     }
 
+
+
     @Override
-    public AdEntity updateAds(Long adId, CreateOrUpdateAd createOrUpdateAd, Authentication authentication) {
+    public Ad updateAds(Long adId, CreateOrUpdateAd createOrUpdateAd, Authentication authentication) {
         return null;
     }
 

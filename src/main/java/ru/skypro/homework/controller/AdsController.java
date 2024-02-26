@@ -30,12 +30,12 @@ import java.util.List;
 public class AdsController {
     private final AdsService adsService;
     private final ImageService imageService;
-    private final AdMapper adMapper;
+
 
     public AdsController(AdsService adsService,ImageService imageService,AdMapper adMapper) {
         this.adsService = adsService;
         this.imageService = imageService;
-        this.adMapper = adMapper;
+
 
     }
 
@@ -104,9 +104,10 @@ public class AdsController {
             }
     )
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> removeAd(@PathVariable int id){
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeAd(@PathVariable int id){
+        adsService.removeAdsById((long) id);
+        return ResponseEntity.ok().build();
     }
     @Operation(
             tags = "Объявления",

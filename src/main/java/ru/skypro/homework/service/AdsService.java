@@ -16,10 +16,12 @@ public interface AdsService {
    Ads getAdsMe(Authentication authentication);
 
     CreateOrUpdateAd addAds(CreateOrUpdateAd createOrUpdateAd, MultipartFile imageFiles, Authentication authentication) throws IOException;
-    AdEntity removeAdsById(Long id,Authentication authentication);
+    void removeAdsById(Long id);
 
 
-    AdEntity updateAds(Long adId, CreateOrUpdateAd createOrUpdateAd, Authentication authentication);
+
+
+ Ad updateAds(Long adId, CreateOrUpdateAd createOrUpdateAd, Authentication authentication);
 
     void updateAdsImage(long id, MultipartFile image, Authentication authentication);
      ExtendedAd getAds(Long id);
