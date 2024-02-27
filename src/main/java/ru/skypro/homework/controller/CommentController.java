@@ -72,8 +72,8 @@ public class CommentController {
     )
     @PostMapping("/{id}/comments")
     public ResponseEntity<CreateOrUpdateComment> addComment
-            (@RequestPart AdEntity id, @RequestPart CreateOrUpdateComment comment, @RequestPart Authentication authentication) throws IOException {
-        CreateOrUpdateComment addComment = commentService.addComment(id, comment, authentication);
+            (@RequestPart AdEntity id, @RequestPart CreateOrUpdateComment comment, @RequestPart String username) throws IOException {
+        CreateOrUpdateComment addComment = commentService.addComment(id, comment, username);
         return ResponseEntity.status(HttpStatus.OK).body(addComment);
     }
     @Operation(

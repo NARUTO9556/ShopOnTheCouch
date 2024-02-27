@@ -12,11 +12,10 @@ import java.io.IOException;
 
 public interface CommentService {
     Comment getAllComment(Long id);
-//    Collection<Comment> getCommentToMe(Authentication authentication);
 
-    CreateOrUpdateComment addComment(AdEntity id, CreateOrUpdateComment createOrUpdateComment, Authentication authentication) throws IOException;
+    CreateOrUpdateComment addComment(AdEntity id, CreateOrUpdateComment createOrUpdateComment, String username) throws IOException;
 
-    String deleteComment(Long commentId, Authentication userName);
+    String deleteComment(Long commentId, String username);
 
-    CreateOrUpdateComment updateComment(Long commentId, CreateOrUpdateComment createOrUpdateComment, Authentication userName);
+    CreateOrUpdateComment updateComment(Long commentId, CreateOrUpdateComment createOrUpdateComment, String userName);
 }

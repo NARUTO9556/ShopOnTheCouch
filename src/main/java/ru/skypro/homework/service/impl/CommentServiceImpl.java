@@ -1,13 +1,10 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.entity.UserEntity;
@@ -20,7 +17,6 @@ import ru.skypro.homework.security.logger.FormLogInfo;
 import ru.skypro.homework.service.CommentService;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -51,17 +47,12 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.toCommentDto(commentRepository.findByAdId(id));
     }
 
-//    @Override
-//    public Collection<Comment> getCommentToMe(Authentication authentication) {
-//        return null;
-//    }
-
     @Override
-    public CreateOrUpdateComment addComment(AdEntity id, CreateOrUpdateComment createOrUpdateComment, Authentication authentication) throws IOException {
+    public CreateOrUpdateComment addComment(AdEntity id, CreateOrUpdateComment createOrUpdateComment, String username) throws IOException {
         log.info(FormLogInfo.getInfo());
         CommentEntity commentEntity = commentMapper.toEntity(createOrUpdateComment);
-        User user = userService.getUser(authentication);
-        commentEntity.setAuthor(userMapper.toEntity(user));
+        UserEntity user = userService.findEntityByEmail(username);
+        commentEntity.setAuthor(user);
         commentEntity.setText(String.valueOf(createOrUpdateComment));
         commentEntity.setPk(id);
         commentRepository.save(commentEntity);
@@ -69,27 +60,12 @@ public class CommentServiceImpl implements CommentService {
     }
     @Transactional
     @Override
-    public String deleteComment(Long commentId, Authentication userName) {
+    public String deleteComment(Long commentId, String userName) {
         return null;
     }
     @Transactional
     @Override
-    public CreateOrUpdateComment updateComment(Long commentId, CreateOrUpdateComment createOrUpdateComment, Authentication userName) {
+    public CreateOrUpdateComment updateComment(Long commentId, CreateOrUpdateComment createOrUpdateComment, String username) {
         return null;
-    }
-
-    private String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
-    }
-
-    private UserEntity getUser() {
-        UserEntity user = null;
-        try {
-            user = userRepository.findByEmail(getCurrentUser()).get();
-        } catch (NoSuchElementException e) {
-            log.error(e.getMessage());
-        }
-        return user;
     }
 }
