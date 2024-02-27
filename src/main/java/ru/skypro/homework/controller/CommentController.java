@@ -48,9 +48,12 @@ public class CommentController {
             }
     )
     @GetMapping("/{id}/comments")
-    public ResponseEntity<Comment> getComments(@PathVariable Long id) {
-        Comment comments = commentService.getAllComment(id);
-        return ResponseEntity.status(HttpStatus.OK).body(comments);
+    public ResponseEntity<Comments> getComments(@PathVariable("id") Long id, Authentication authentication) {
+        if (authentication.getName() != null) {
+            return ResponseEntity.ok(commentService.getAllComments(id));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @Operation(
@@ -72,9 +75,8 @@ public class CommentController {
     )
     @PostMapping("/{id}/comments")
     public ResponseEntity<CreateOrUpdateComment> addComment
-            (@RequestPart AdEntity id, @RequestPart CreateOrUpdateComment comment, @RequestPart String username) throws IOException {
-        CreateOrUpdateComment addComment = commentService.addComment(id, comment, username);
-        return ResponseEntity.status(HttpStatus.OK).body(addComment);
+            (@PathVariable("id") Long id, @RequestBody CreateOrUpdateComment comment, Authentication authentication) throws IOException {
+        return ResponseEntity.ok(commentService.addComment(id, comment, authentication.getName()));
     }
     @Operation(
             tags = "Комментарии",
@@ -87,8 +89,19 @@ public class CommentController {
             }
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable int adId, @PathVariable int commentId) {
-        return ResponseEntity.status(HttpStatus.OK).build();//пустышка
+    public ResponseEntity<?> deleteComment(@PathVariable("adId") long adId, @PathVariable("commentId") long commentId, Authentication authentication) {
+        if (authentication.getName() != null) {
+            String result = commentService.deleteComment(commentId, authentication.getName());
+            if (result.equals("forbidden")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            } else if (result.equals("not found")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @Operation(
@@ -111,7 +124,7 @@ public class CommentController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable int adId, @PathVariable int commentId) {
-        return ResponseEntity.status(HttpStatus.OK).build();//пустышка
+    public ResponseEntity<?> updateComment(@PathVariable("adId") long adId, @PathVariable("commentId") long commentId, @RequestBody CreateOrUpdateComment createOrUpdateComment, Authentication authentication) {
+        return ResponseEntity.ok(commentService.updateComment(adId, commentId, createOrUpdateComment));
     }
 }

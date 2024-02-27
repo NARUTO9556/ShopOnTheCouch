@@ -6,11 +6,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.skypro.homework.entity.CommentEntity;
 
+import java.util.List;
+
 /**
  * Репозиторий для комментариев
  */
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     @Query(value = "select * from comments where ad_id = :ad_id", nativeQuery = true)
-    CommentEntity findByAdId(@Param("ad_id") Long id);
+    List<CommentEntity> findByAdId(@Param("ad_id") Long id);
+
 }

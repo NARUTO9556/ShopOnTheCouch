@@ -1,5 +1,6 @@
 package ru.skypro.homework.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -40,8 +41,8 @@ public class CommentEntity {
      * <br><i>много комментариев - одно  объявление </i>
      */
     @ManyToOne
-//    @JsonIgnore
-    @JoinColumn(name = "ad_id", nullable = false)
+    @JsonIgnore
+    @JoinColumn(name = "ad_id")
     private AdEntity pk;
 
     /**
@@ -49,7 +50,7 @@ public class CommentEntity {
      * <br><i>много комментариев - один  пользователь </i>
      */
     @ManyToOne
-//    @JsonIgnore
-    @JoinColumn(name = "author_id", nullable = false)
+    @JsonIgnore
+    @JoinColumn(name = "author_id")
     private UserEntity author;
 }
