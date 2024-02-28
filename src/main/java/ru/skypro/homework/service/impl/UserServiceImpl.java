@@ -43,7 +43,14 @@ public class UserServiceImpl implements UserService {
         log.info("Получить данные пользователя" + FormLogInfo.getInfo());
         String nameEmail = authentication.getName();
         UserEntity userEntity = findEntityByEmail(nameEmail);
-        return userMapper.toDtoUser(userEntity);
+        User user = userMapper.toDtoUser(userEntity);
+        if (userEntity.getImage() != null) {
+
+            user.setImage("/users/" + userEntity.getId() + "/test");
+//            user.setImage("/" + userEntity.getImage().getFilePath());
+//          /users/  + userEntity.getId()   +/ путь URL  ->
+        }
+        return user;
     }
 
     /**
@@ -64,7 +71,7 @@ public class UserServiceImpl implements UserService {
         oldUser.setPhone(newpUpdateUserDto.getPhone());
 
         userRepository.save(oldUser);
-        log.info("Пользователь успешно обновлен в БД:  "+FormLogInfo.getInfo());
+        log.info("Пользователь успешно обновлен в БД:  " + FormLogInfo.getInfo());
 
         return userMapper.toDtoUpdateUser(oldUser);
     }

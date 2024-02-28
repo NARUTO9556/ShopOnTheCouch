@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface ImageRepository extends JpaRepository<ImageEntity,Long> {
     Optional<ImageEntity> findByUserId(Long id);
     Optional<ImageEntity> findByFilePath(String filePath);
+
 }

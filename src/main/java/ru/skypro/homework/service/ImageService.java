@@ -20,7 +20,8 @@ public interface ImageService {
     // методы для загрузки аватарок для пользователя
     void updateUserImage(MultipartFile image, Authentication authentication)throws IOException;
 
-    ImageEntity findUserAvatar(String id);
+    ImageEntity findUserAvatar(Long id);
+//    ImageEntity findUserAvatar(String id);
 
     byte[] getImage(String imagePath);
 }

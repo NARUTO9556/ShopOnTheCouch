@@ -61,6 +61,7 @@ public interface UserMapper {
 
     UpdateUser toDtoUpdateUser(UserEntity userEntity);
 
-    @Mapping(source = "image.filePath", target = "image")
+
+    @Mapping(ignore = true, target = "image")
     User toDtoUser(UserEntity userEntity);
 }

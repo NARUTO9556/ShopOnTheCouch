@@ -30,7 +30,6 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-
     @Operation(
             tags = "Пользователи",
             summary = "Обновление аватара авторизованного пользователя",
@@ -54,8 +53,7 @@ public class ImageController {
             tags = "Avatar",
             summary = "step_2_Обновление аватара авторизованного пользователя"
     )
-
-    @GetMapping(value = "{imagePath}",
+    @GetMapping(value = "/users/{id}/test",
             produces = {
                     MediaType.IMAGE_PNG_VALUE,
                     MediaType.IMAGE_JPEG_VALUE,
@@ -66,18 +64,27 @@ public class ImageController {
 //    public byte[] getImage(
     public ResponseEntity<byte[]> getImage(
             @Parameter(description = "Ссылка на изображение в файловой системе", example = "avatars_1.jpg")
-            @PathVariable String imagePath, HttpServletResponse response) throws IOException {
+//            @PathVariable String imagePath, HttpServletResponse response) throws IOException {
+            @PathVariable("id") Long userId, HttpServletResponse response) throws IOException {
 
         log.info("STEP_2_Обновление аватара авторизованного пользователя___" + FormLogInfo.getInfo());
 
-        ImageEntity avatar = imageService.findUserAvatar(imagePath);
+        ImageEntity avatar = imageService.findUserAvatar(userId);
+//        ImageEntity avatar = imageService.findUserAvatar(imagePath);
+
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+//        headers.setContentLength(avatar.getData().length);/
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
         headers.setContentLength(avatar.getData().length);
 
+
 //        return imageService.getImage(imagePath);
 //        System.out.println("avatar.getData() = " + Arrays.toString(avatar.getData()));
+//        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
     }
 }

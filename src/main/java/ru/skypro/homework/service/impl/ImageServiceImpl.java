@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.ImageEntity;
 import ru.skypro.homework.entity.UserEntity;
+import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.ImageRepository;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.security.logger.FormLogInfo;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
@@ -37,6 +39,8 @@ public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public ImageEntity uploadImage(MultipartFile imageFile) throws IOException {
@@ -64,7 +68,7 @@ public class ImageServiceImpl implements ImageService {
     public void updateUserImage(MultipartFile avatarFile, Authentication authentication) throws IOException {
         log.info("STEP_3_updateUserImage" + FormLogInfo.getInfo());
 
-        int getId = userService.getUser(authentication).getId();//имя файла
+        long getId = userService.getUser(authentication).getId();//имя файла
         String fileName = getId + "." + getExtensions(Objects.requireNonNull(avatarFile.getOriginalFilename()));
         Path filePath = Path.of(avatarsDir, fileName);
 
@@ -82,7 +86,7 @@ public class ImageServiceImpl implements ImageService {
             bis.transferTo(bos);
             log.info("STEP_B_transferTo:   " + FormLogInfo.getInfo());
         }
-        ImageEntity avatar = findUserAvatar((long) getId);
+        ImageEntity avatar = findUserAvatar( getId);
 
         avatar.setFilePath(fileName);//1.jpg
 //        avatar.setFilePath(filePath.toString());
@@ -98,14 +102,24 @@ public class ImageServiceImpl implements ImageService {
         //заполнить поле image у UserEntity
         UserEntity userEntity = userService.findById(getId);
         userEntity.setImage(avatar);
+
         log.info("STEP_D_SAVE_userEntity.setImage(avatar)__" + FormLogInfo.getInfo());
+        userRepository.save(userEntity);
+
+        userMapper.toDtoUser(userEntity);
         //надо ли тут запустить мапперы?
     }
 
+//    @Override
+//    public ImageEntity findUserAvatar(String filePath) {
+//        log.info("FIND_USER_AVATAR" + FormLogInfo.getInfo());
+//        return imageRepository.findByFilePath(filePath).orElseThrow();
+//    }
     @Override
-    public ImageEntity findUserAvatar(String filePath) {
+    public ImageEntity findUserAvatar(Long userId) {
         log.info("FIND_USER_AVATAR" + FormLogInfo.getInfo());
-        return imageRepository.findByFilePath(filePath).orElseThrow();
+        return imageRepository.findByUserId(userId).orElseThrow();
+//        return imageRepository.findByFilePath(filePath).orElseThrow();
     }
 
     @Override
@@ -137,7 +151,7 @@ public class ImageServiceImpl implements ImageService {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public ImageEntity findUserAvatar(Long id) {
-        return imageRepository.findByUserId(id).orElse(new ImageEntity());
-    }
+//    public ImageEntity findUserAvatar(Long id) {
+//        return imageRepository.findByUserId(id).orElse(new ImageEntity());
+//    }
 }
