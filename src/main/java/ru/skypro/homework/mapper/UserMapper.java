@@ -45,7 +45,8 @@ public interface UserMapper {
 
     UserEntity toEntity(UpdateUser dto);
 
-    @Mapping(source = "image", target = "image.filePath")
+    @Mapping(source = "image", target = "image.filePath")//изменить
+//    @Mapping(ignore = true, target = "image.filePath")
     UserEntity toEntity(User dto);
 
 

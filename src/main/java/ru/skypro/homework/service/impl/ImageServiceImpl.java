@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.ImageEntity;
 import ru.skypro.homework.entity.UserEntity;
+import ru.skypro.homework.exception.ImageNotFound;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
@@ -118,7 +119,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ImageEntity findUserAvatar(Long userId) {
         log.info("FIND_USER_AVATAR" + FormLogInfo.getInfo());
-        return imageRepository.findByUserId(userId).orElseThrow();
+        return imageRepository.findByUserId(userId).orElse(new ImageEntity());
+//        return imageRepository.findByUserId(userId).orElseThrow(ImageNotFound::new);
+//        return imageRepository.findByUserId(userId).orElseThrow();//111
+
 //        return imageRepository.findByFilePath(filePath).orElseThrow();
     }
 
