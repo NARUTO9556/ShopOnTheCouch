@@ -1,7 +1,7 @@
 package ru.skypro.homework.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,7 +29,7 @@ public class CommentEntity {
     /**
      * дата и время создания комментария
      */
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     /**
      * текст комментария

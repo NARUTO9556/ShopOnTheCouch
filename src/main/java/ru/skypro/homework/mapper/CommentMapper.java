@@ -31,6 +31,7 @@ public interface CommentMapper {
     @Mapping(source = "pk", target = "pk.id")
     @Mapping(source = "authorImage", target = "author.image.id")
     @Mapping(source = "authorFirstName", target = "author.firstName")
+    @Mapping(source = "createdAt", target = "createdAt")
     CommentEntity toEntity(Comment dto);
 
 //    CommentEntity toEntity(Comments dto);
@@ -42,6 +43,7 @@ public interface CommentMapper {
     @Mapping(target = "pk", source = "pk.id")
     @Mapping(target = "authorImage", source = "author.image.id")
     @Mapping(target = "authorFirstName", source = "author.firstName")
+    @Mapping(target = "createdAt", source = "createdAt")
     Comment toCommentDto(CommentEntity commentEntity);
 
 //    Comments toCommentsDto(CommentEntity entity);

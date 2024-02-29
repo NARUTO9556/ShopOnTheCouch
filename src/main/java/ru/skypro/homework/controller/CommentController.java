@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.entity.AdEntity;
-import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.service.CommentService;
 
@@ -75,7 +73,7 @@ public class CommentController {
     )
     @PostMapping("/{id}/comments")
     public ResponseEntity<CreateOrUpdateComment> addComment
-            (@PathVariable("id") Long id, @RequestBody CreateOrUpdateComment comment, Authentication authentication) throws IOException {
+            (@PathVariable("id") Long id, @org.springframework.web.bind.annotation.RequestBody CreateOrUpdateComment comment, Authentication authentication) throws IOException {
         return ResponseEntity.ok(commentService.addComment(id, comment, authentication.getName()));
     }
     @Operation(
@@ -124,7 +122,7 @@ public class CommentController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable("adId") long adId, @PathVariable("commentId") long commentId, @RequestBody CreateOrUpdateComment createOrUpdateComment, Authentication authentication) {
-        return ResponseEntity.ok(commentService.updateComment(adId, commentId, createOrUpdateComment));
+    public ResponseEntity<CreateOrUpdateComment> updateComment(@PathVariable("adId") long adId, @PathVariable("commentId") long commentId, @org.springframework.web.bind.annotation.RequestBody CreateOrUpdateComment comment, Authentication authentication) {
+        return ResponseEntity.ok(commentService.updateComment(adId, commentId, comment));
     }
 }

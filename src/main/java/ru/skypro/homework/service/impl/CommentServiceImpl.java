@@ -3,7 +3,6 @@ package ru.skypro.homework.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.dto.Role;
@@ -20,6 +19,7 @@ import ru.skypro.homework.security.logger.FormLogInfo;
 import ru.skypro.homework.service.CommentService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,9 +64,12 @@ public class CommentServiceImpl implements CommentService {
         UserEntity user = userService.findEntityByEmail(username);
         AdEntity ad = adRepository.findById(id).orElse(null);
         commentEntity.setAuthor(user);
-        commentEntity.setText(String.valueOf(createOrUpdateComment));
+        commentEntity.setText(createOrUpdateComment.getText());
         commentEntity.setPk(ad);
+        commentEntity.setCreatedAt(LocalDateTime.now());
         commentRepository.save(commentEntity);
+        user.getComments().add(commentEntity);
+        userRepository.save(user);
         return commentMapper.toCreateOrUpdateCommentDto(commentEntity);
     }
 
@@ -93,6 +96,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public CreateOrUpdateComment updateComment(Long adId, Long commentId, CreateOrUpdateComment createOrUpdateComment) {
+        log.info(FormLogInfo.getInfo());
         CommentEntity comment = commentRepository.findById(commentId).get();
         comment.setText(createOrUpdateComment.getText());
         commentRepository.save(comment);

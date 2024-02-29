@@ -26,7 +26,7 @@ public class Comment {
      * дата и время создания комментария в милисекундах с 00:00:00 01.01.1970
      */
     @Schema(description = "дата и время создания комментария в милисекундах с 00:00:00 01.01.1970")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     /**
      * id комментария
      */
