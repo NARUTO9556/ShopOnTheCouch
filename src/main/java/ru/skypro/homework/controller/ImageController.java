@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,8 @@ import java.io.IOException;
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 public class ImageController {
+    @Value("${image.user.dir.path}")
+    private String avatarsDir;
     private final ImageService imageService;
 
     public ImageController(ImageService imageService) {
@@ -53,7 +56,7 @@ public class ImageController {
             tags = "Avatar",
             summary = "step_2_Обновление аватара авторизованного пользователя"
     )
-    @GetMapping(value = "/users/{id}/test",
+    @GetMapping(value = "/users/{id}/avatarsDir",//test
             produces = {
                     MediaType.IMAGE_PNG_VALUE,
                     MediaType.IMAGE_JPEG_VALUE,

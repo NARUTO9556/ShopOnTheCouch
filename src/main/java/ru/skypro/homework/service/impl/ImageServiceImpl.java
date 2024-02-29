@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.ImageEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.exception.ImageNotFound;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
@@ -34,9 +33,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     @Value("${image.user.dir.path}")
-    private String avatarsDir;//полный путь к папке... (application.properties -> image.user.dir.path=./src/main/resources/images/avatars)
-    @Value("${image.ads.dir.path}")
-    private String adsDir;//полный путь к папке ads... (application.properties)
+    private String avatarsDir;
 
     private final ImageRepository imageRepository;
     private final UserService userService;
@@ -120,9 +117,6 @@ public class ImageServiceImpl implements ImageService {
     public ImageEntity findUserAvatar(Long userId) {
         log.info("FIND_USER_AVATAR" + FormLogInfo.getInfo());
         return imageRepository.findByUserId(userId).orElse(new ImageEntity());
-//        return imageRepository.findByUserId(userId).orElseThrow(ImageNotFound::new);
-//        return imageRepository.findByUserId(userId).orElseThrow();//111
-
 //        return imageRepository.findByFilePath(filePath).orElseThrow();
     }
 
