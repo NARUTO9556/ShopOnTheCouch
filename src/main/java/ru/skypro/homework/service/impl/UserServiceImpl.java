@@ -1,6 +1,7 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ import ru.skypro.homework.service.UserService;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
+    @Value("${image.user.dir.path}")
+    private String avatarsDir;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toDtoUser(userEntity);
         if (userEntity.getImage() != null) {
 
-            user.setImage("/users/" + userEntity.getId() + "/test");
+            user.setImage("/users/" + userEntity.getId() + "/avatarsDir");//test
 //            user.setImage("/" + userEntity.getImage().getFilePath());
 //          /users/  + userEntity.getId()   +/ путь URL  ->
         }

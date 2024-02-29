@@ -33,9 +33,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     @Value("${image.user.dir.path}")
-    private String avatarsDir;//полный путь к папке... (application.properties -> image.user.dir.path=./src/main/resources/images/avatars)
-    @Value("${image.ads.dir.path}")
-    private String adsDir;//полный путь к папке ads... (application.properties)
+    private String avatarsDir;
 
     private final ImageRepository imageRepository;
     private final UserService userService;
@@ -92,7 +90,7 @@ public class ImageServiceImpl implements ImageService {
 //        avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
-        avatar.setData(avatarFile.getBytes());
+        avatar.setData(avatarFile.getBytes());//////////////////////////
 //        avatar.setData(generateImagePreview(filePath));//если надо превью
 
         avatar.setUser(userService.findById(getId));
@@ -118,7 +116,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ImageEntity findUserAvatar(Long userId) {
         log.info("FIND_USER_AVATAR" + FormLogInfo.getInfo());
-        return imageRepository.findByUserId(userId).orElseThrow();
+        return imageRepository.findByUserId(userId).orElse(new ImageEntity());
 //        return imageRepository.findByFilePath(filePath).orElseThrow();
     }
 
