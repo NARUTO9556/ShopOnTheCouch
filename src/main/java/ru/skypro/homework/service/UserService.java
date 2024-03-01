@@ -1,6 +1,7 @@
 package ru.skypro.homework.service;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
@@ -35,4 +36,19 @@ public interface UserService {
      */
     UserEntity findById(long id);
 
+    /**
+     * обновить аватарку пользователя
+     *
+     * @param image
+     * @param authentication
+     */
+    void updateUserImage(MultipartFile image, Authentication authentication);
+
+    /**
+     * получить массив данных для аватарки
+     *
+     * @param id
+     * @return
+     */
+    byte[] getAvatarById(Long id);
 }

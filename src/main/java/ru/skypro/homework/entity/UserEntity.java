@@ -80,7 +80,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "author")
     private List<CommentEntity> comments;// id комментария
 
-    @OneToOne
-    @JoinColumn(name = "image")
-    private ImageEntity image;
+//    @OneToOne
+//    @JoinColumn(name = "image")
+//    private ImageEntity image;
+
+    private String image;
 }

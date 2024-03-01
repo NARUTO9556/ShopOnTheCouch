@@ -1,16 +1,18 @@
 package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
@@ -24,9 +26,16 @@ import javax.validation.constraints.NotBlank;
 @CrossOrigin(value = "http://localhost:3000")
 @Tag(name = "Пользователи")
 @RestController
-@AllArgsConstructor
 public class UsersController {
+    @Value("${image.user.dir.path}")
+    private String avatarsDir;
+
     private final UserService userService;
+
+    public UsersController(UserService userService) {
+        this.userService = userService;
+    }
+
     @Operation(
             tags = "Пользователи",
             summary = "Обновление пароля",
@@ -77,5 +86,42 @@ public class UsersController {
             @NotBlank(message = "updateUser не должен быть пустым") UpdateUser updateUser, Authentication authentication) {
         log.info("Обновление информации об авторизованном пользователе___" + FormLogInfo.getInfo());
         return ResponseEntity.ok(userService.updateUser(updateUser, authentication));
+    }
+
+    @Operation(
+            tags = "Пользователи",
+            summary = "Обновление аватара авторизованного пользователя",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema())),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {@Content()})
+            }
+    )
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateUserImage(@RequestParam MultipartFile image,
+                                                Authentication authentication) {
+        log.info("Обновление аватара авторизованного пользователя___" + FormLogInfo.getInfo());
+
+        userService.updateUserImage(image, authentication);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            tags = "Avatar",
+            summary = "STEP_2_Обновление аватара авторизованного пользователя"
+    )
+    @GetMapping(value = "{id}/avatarsDir",//test
+            produces = {
+                    MediaType.IMAGE_PNG_VALUE,
+                    MediaType.IMAGE_JPEG_VALUE,
+                    MediaType.IMAGE_GIF_VALUE
+                    , "image/*"
+            }
+    )
+    public ResponseEntity<byte[]> getImage(
+            @Parameter(description = "Значение идентификатора пользователя", example = "1")
+            @PathVariable("id") Long userId) {
+        log.info("STEP_2_Обновление аватара авторизованного пользователя___" + FormLogInfo.getInfo());
+        return ResponseEntity.ok(userService.getAvatarById(userId));
     }
 }
