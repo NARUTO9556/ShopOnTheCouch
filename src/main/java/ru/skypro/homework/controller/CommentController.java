@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.Comment;
@@ -84,7 +85,8 @@ public class CommentController {
             }
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable("adId") long adId, @PathVariable("commentId") long commentId, Authentication authentication) {
+    @PreAuthorize(value = "hasRole('ADMIN') or @adServiceImpl.isAuthorAd(authentication.getName(), #adId)")
+    public ResponseEntity<String> deleteComment(@PathVariable("adId") long adId, @PathVariable("commentId") long commentId, Authentication authentication) {
         if (authentication.getName() != null) {
             String result = commentService.deleteComment(commentId, authentication.getName());
             if (result.equals("forbidden")) {
@@ -119,6 +121,7 @@ public class CommentController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
+    @PreAuthorize(value = "hasRole('ADMIN') or @adServiceImpl.isAuthorAd(authentication.getName(), #adId)")
     public ResponseEntity<CreateOrUpdateComment> updateComment(@PathVariable("adId") long adId, @PathVariable("commentId") long commentId, @org.springframework.web.bind.annotation.RequestBody CreateOrUpdateComment comment, Authentication authentication) {
         return ResponseEntity.ok(commentService.updateComment(adId, commentId, comment));
     }

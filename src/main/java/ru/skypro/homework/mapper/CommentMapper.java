@@ -18,7 +18,7 @@ import java.util.List;
  * <br>-toCommentsDto<i></i>
  * <br>-toCreateOrUpdateCommentDto<i></i>
  */
-@Mapper(componentModel = "string")
+@Mapper(componentModel = "spring")
 public interface CommentMapper {
 
     @Mapping(source = "author", target = "id")
@@ -50,5 +50,4 @@ public interface CommentMapper {
         int id = commentEntity.getAuthor().getId().intValue();
         return "/users/" + id + "/avatarsDir";
     }
-
 }
