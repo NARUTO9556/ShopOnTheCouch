@@ -2,6 +2,7 @@ package ru.skypro.homework.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
@@ -34,7 +35,7 @@ public interface CommentMapper {
     //_____ toDto___
     @Mapping(target = "author", source = "id")
     @Mapping(target = "pk", source = "pk.id")
-    @Mapping(target = "authorImage",ignore = true)
+    @Mapping(target = "authorImage",expression = "java(image(commentEntity))")
     @Mapping(target = "authorFirstName", source = "author.firstName")
     @Mapping(target = "createdAt", source = "createdAt")
     Comment toCommentDto(CommentEntity commentEntity);
@@ -44,5 +45,10 @@ public interface CommentMapper {
     @Mapping(target = "count", source = "size")
     @Mapping(target = "results", source = "list")
     Comments toComments(Integer size, List<CommentEntity> list);
+
+    default String image(CommentEntity commentEntity) {
+        int id = commentEntity.getAuthor().getId().intValue();
+        return "/users/" + id + "/avatarsDir";
+    }
 
 }

@@ -1,6 +1,7 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.Comments;
@@ -14,6 +15,7 @@ import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentRepository;
+import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.security.logger.FormLogInfo;
 import ru.skypro.homework.service.CommentService;
@@ -26,9 +28,12 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class CommentServiceImpl implements CommentService {
+    @Value("${image.user.dir.path}")
+    private String avatarsDir;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final AdRepository adRepository;
+    private final ImageRepository imageRepository;
     private final AdMapper adMapper;
     private final UserMapper userMapper;
     private final CommentMapper commentMapper;
@@ -37,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentServiceImpl(CommentRepository commentRepository,
                               UserRepository userRepository,
                               AdRepository adRepository,
+                              ImageRepository imageRepository,
                               AdMapper adMapper,
                               UserMapper userMapper,
                               CommentMapper commentMapper,
@@ -44,6 +50,7 @@ public class CommentServiceImpl implements CommentService {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.adRepository = adRepository;
+        this.imageRepository = imageRepository;
         this.adMapper = adMapper;
         this.userMapper = userMapper;
         this.commentMapper = commentMapper;

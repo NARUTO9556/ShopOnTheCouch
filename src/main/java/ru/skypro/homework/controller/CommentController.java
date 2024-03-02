@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,15 +25,11 @@ import java.io.IOException;
 @CrossOrigin(value = "http://localhost:3000")
 @RequestMapping("/ads")
 @Tag(name = "Комментарии")
+@AllArgsConstructor
 @RestController
 public class CommentController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;
-
-    public CommentController(CommentService commentService, CommentMapper commentMapper) {
-        this.commentService = commentService;
-        this.commentMapper = commentMapper;
-    }
 
     @Operation(
             tags = "Комментарии",
