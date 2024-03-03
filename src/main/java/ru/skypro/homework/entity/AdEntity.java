@@ -37,7 +37,7 @@ public class AdEntity {
     /**
      * цена объявления
      */
-    private Double price;
+    private Integer price;
 
     /**
      * описание объявления
@@ -66,6 +66,6 @@ public class AdEntity {
      */
     @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "image")
+    @JoinColumn(name = "image_id")
     private ImageEntity image;
 }

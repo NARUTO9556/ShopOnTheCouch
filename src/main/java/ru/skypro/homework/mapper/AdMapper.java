@@ -2,12 +2,15 @@ package ru.skypro.homework.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.Ads;
 import ru.skypro.homework.dto.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.entity.AdEntity;
+import ru.skypro.homework.entity.ImageEntity;
+import ru.skypro.homework.entity.UserEntity;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AdMapper {
     AdMapper INSTANCE = Mappers.getMapper(AdMapper.class);
+    String ADS_IMAGES = "/ads/image/";
 
     //_____ toEntity___
     @Mapping(source = "author", target = "author.id")
@@ -31,7 +35,9 @@ public interface AdMapper {
     AdEntity toEntity(Ad ad);
 
     //    AdEntity toEntity(Ads ads);
+
     @Mapping(source = "title", target = "name")
+
     AdEntity toEntity(CreateOrUpdateAd createOrUpdateAd);
 
     //
@@ -47,9 +53,9 @@ public interface AdMapper {
     //
     //_____ toDto___
     @Mapping(target = "author", source = "author.id")
-    @Mapping(target = "image", source = "image.id")
+    @Mapping(target = "image", source = "image",qualifiedByName = "imageMapping")
     @Mapping(target = "pk", source = "id")
-    @Mapping(target = "title", source = "description")
+    @Mapping(target = "title", source = "name")
     Ad toAd(AdEntity adEntity);
 
     //    Ads toAds(AdEntity adEntity);
@@ -60,7 +66,7 @@ public interface AdMapper {
     @Mapping(target = "authorFirstName", source = "author.firstName")
     @Mapping(target = "authorLastName", source = "author.lastName")
     @Mapping(target = "email", source = "author.email")
-    @Mapping(target = "image", source = "image.id")
+    @Mapping(target = "image", source = "image",qualifiedByName = "imageMapping")
     @Mapping(target = "phone", source = "author.phone")
     @Mapping(target = "title", source = "name")
     ExtendedAd toExtendedAd(AdEntity adEntity);
@@ -70,4 +76,13 @@ public interface AdMapper {
     @Mapping(target = "count", source = "size")
     @Mapping(target = "results", source = "list")
     Ads toAds(Integer size, List<AdEntity> list);
+
+
+    @Named("imageMapping")
+    default String imageMapping(ImageEntity image) {
+        if (image == null) {
+            return null;
+        }
+        return ADS_IMAGES + image.getId();
+    }
 }

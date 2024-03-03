@@ -8,21 +8,18 @@ import ru.skypro.homework.dto.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.entity.AdEntity;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Collection;
 
 public interface AdsService {
-  Ads getAllAds();
-   Ads getAdsMe(Authentication authentication);
-
-    CreateOrUpdateAd addAds(CreateOrUpdateAd createOrUpdateAd, MultipartFile imageFiles, Authentication authentication) throws IOException;
+    Ads getAllAds();
+    Ads getAdsMe(Authentication authentication);
+    Ad addAds(CreateOrUpdateAd createOrUpdateAd, MultipartFile imageFiles, Authentication authentication) throws IOException;
     void removeAdsById(Long id);
-
-
-
-
- Ad updateAds(Long adId, CreateOrUpdateAd createOrUpdateAd, Authentication authentication);
+    @Transactional
+    Ad updateAds(Long adId, CreateOrUpdateAd createOrUpdateAd);
 
     void updateAdsImage(long id, MultipartFile image, Authentication authentication);
-     ExtendedAd getAds(Long id);
+    ExtendedAd getAds(Long id);
 }

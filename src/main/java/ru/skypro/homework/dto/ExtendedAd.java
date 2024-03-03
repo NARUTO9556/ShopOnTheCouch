@@ -12,7 +12,7 @@ public class ExtendedAd {
      * ID объявления
      */
     @Schema(description = "id объявления")
-    int pk;
+    Integer pk;
     /**
      * Имя автора объявления
      */
@@ -48,7 +48,7 @@ public class ExtendedAd {
      * Цена объявления
      */
     @Schema(description = "цена объявления")
-    int price;
+    Integer price;
     /**
      * Заголовок объявления
      */
